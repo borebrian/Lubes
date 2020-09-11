@@ -1,0 +1,228 @@
+﻿
+@model Lubes.Models.Add_item
+@*@ViewBag.d*@
+<div class="card card-1 bg-light text-dark">
+    <div class="card-body ">
+        <div class="row">
+            <div class="col-lg-12">
+
+
+                <h7>
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> &nbsp;Submit stock
+
+                </h7>
+            </div>
+
+        </div>
+    </div>
+</div>
+@if (ViewBag.StockUpdateStatus != null)
+{
+    <div class="alert alert-success" role="alert" style="margin-top:10px;">
+        <h4 class="alert-heading">Success!</h4>
+        <p>@ViewBag.StockUpdateStatus</p>
+        <hr>
+        <p class="mb-0">NB:Confirm the values from the dialog before submission.</p>
+    </div>
+}
+
+@if (TempData["StockUpdateStatus"] != null)
+{
+    <div class="alert alert-success" role="alert" style="margin-top:10px;">
+        <h4 class="alert-heading">Success!</h4>
+        <p>@TempData["StockUpdateStatus"]</p>
+        <hr>
+        <p class="mb-0">NB:Confirm the values from the dialog before submission.</p>
+    </div>
+}
+@if (TempData["StockUpdateStatus1"] != null)
+{
+    <div class="alert alert-danger" role="alert" style="margin-top:10px;">
+        <h4 class="alert-heading">Error!</h4>
+        <p>@TempData["StockUpdateStatus1"]</p>
+        <hr>
+        @*<p class="mb-0">NB:Confirm the values from the dialog before submission.</p>*@
+    </div>
+}
+<div class="row">
+    @{
+        if (ViewBag.JoinList == null)
+        {
+            <div class="col-lg-12" style="margin:5px;">
+
+                <div class="alert alert-danger" role="alert" style="margin-top:10px;">
+                    <div class="row">
+
+                        <div class="col-lg-1">
+                            <img src="/SystemImage/done.png" style="width:80px;height:80px;" alt="" />
+                        </div>
+                        <div class="col-lg-11 text-left">
+                            <h4 class="alert-heading">You are all done for today!</h4>
+                            <p>All records have been submitted successfully.</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <p class="mb-0">NB:Confirm the values from the dialog before submission.</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in ViewBag.JoinList)
+            {
+<div class="col-lg-12" style="margin:5px;">
+    <form method="post" enctype="multipart/form-data" asp-controller="Add_item" asp-action="SubmitStock">
+
+
+        <div class="w3-card">
+            <header class="w3-container  bg-dark text-light">
+                <h3>  @item.Item_name</h3>
+            </header>
+            <div class="w3-container bg-light">
+                <table>
+                    <tr>
+                        <td>
+                            <span class="badge badge-pill badge-danger">   <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>&nbsp;&nbsp;@item.Quantity</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-pill badge-dark">  Ksh.&nbsp;&nbsp; @item.Item_price</span>
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+                <table>
+                    <tr>
+                        <td>
+
+                            <img src="/@item.ImageURL" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:80px;height:80px; border:1px solid black; ">
+                        </td>
+                        <td>
+                            <input name="Quantity" required placeholder="Enter stock count here" class="form-control" />
+                            <input required type="hidden" placeholder="Enter stock count here" id="itemQuantity" name="id" value="@item.id" class="form-control" />
+
+                        </td>
+                    </tr>
+                </table>
+                <br>
+            </div>
+            <div class="row">
+                <div class="col-lg-12  text-light">
+
+                    <button type="submit" class=" btn btn-dark w3-block" style="border-top:1px red solid;">Submit &nbsp;<i class="fa fa-check" aria-hidden="true"></i></button>
+
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+
+</div>
+
+
+
+            }
+        }
+    }
+</div>
+@*<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>*@
+<div id="myModal" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+         Modal content
+        <div class="modal-content">
+
+            <div class="modal-header bg-dark text-light text-center">
+                <h6> <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Please  confirm the values before submiting</h6>
+                <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+            </div>
+            <form method="post" enctype="multipart/form-data" asp-controller="Add_item" asp-action="SubmitStockPost">
+                <div class="modal-body">
+
+                    <div class="w3-card">
+                        <header class="w3-container   ">
+                            <h6> <i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;&nbsp;|&nbsp;&nbsp;      @ViewBag.Item_name</h6>
+                        </header>
+                       
+                        </div>
+
+                            <table class="table"  style="margin-top:20px;">
+                               
+                                <tr>
+                                    <td>Submitted stock:</td>
+                                    <td>
+                                        <input required type="hidden" placeholder="Enter stock count here"  name="id" value="@ViewBag.id" class="form-control" />
+
+                                        <input asp-for="Quantity" value="@ViewBag.EnteredQuantity" name="Quantity" class="form-control " style="padding:20px;" placeholder="Enter modified value" />
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Initial stock value:</td>
+                                    <td>
+                                        @ViewBag.InitialQuantity
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Item(s) sold:</td>
+                                    <td>@ViewBag.sold</td>
+                                </tr>
+                                <tr>
+                                    <td>Item price:</td>
+                                    <td>@ViewBag.price</td>
+                                </tr>
+                                <tr>
+                                    <td>Total:</td>
+                                    <td>@ViewBag.ChashMade</td>
+                                </tr>
+                            </table>
+                            @*<p id="displayname">@ViewBag.test</p>*@
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <table class="table">
+                                <tr>
+                                    <td class="text-left">
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;Submit</button>
+                                    </td>
+                                    <td class="text-right">
+                                        <button class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Calcel</button>
+                                    </td>
+                                </tr>
+
+
+                            </table>
+                        </div>
+</form>
+        </div>
+
+    </div>
+</div>
+
+@section scripts3
+{
+    <script type="text/javascript">
+    $(document).ready(function () {
+        //displayname.value = item_name;
+        //displayquantity.innerHTML = inputValue;
+
+        //document.getElementById("displayname").innerHTML = a;
+        //document.getElementById("displayquantity").innerHTML = document.getElementById("item_name1").value;
+        var data = "@ViewBag.AllowPopup";
+
+        if (data == "1") {
+
+            $('#myModal').modal('show')
+
+        }
+        else {
+
+        }
+       
+
+    });
+    </script>
+
+}

@@ -1,0 +1,108 @@
+﻿@model Lubes.Models.Item_category
+
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card card-1">
+    <div class="card-body">
+        <h4><img src="/SystemImage/addcategory.png" class="logo1" alt="" /> &nbsp;Add new item category</h4>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <div class="card card-1">
+            <div class="card-header text-left" style="        background-color: #1ABC9C;
+        color: white">
+                <img src="/SystemImage/logo.png" alt="" class="rounded-circle" style="height:50px;width:50px;border:2px white solid" /> &nbsp; Add new category
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Category_name" class="control-label"></label>
+                        <input asp-for="Category_name" class="form-control" />
+                        <span asp-validation-for="Category_name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Category_image" class="control-label"></label>
+                        <div class="custom-file">
+                            <input asp-for="Category_image" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <span asp-validation-for="Category_image" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        @*<input type="submit" value="Create" class="btn btn-primary" />*@
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-cloud-upload" aria-hidden="true"></i>&nbsp;Submit</button>
+                        @*<input type="submit" value="Create" class="btn btn-primary" />*@
+                        <a asp-action="Create" asp-controller="Add_item" class="btn btn-primary">Go to items &nbsp;<i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 mt-10"  >
+        <div class="card card-1">
+            <div class="card-header text-left">
+                <h4><img src="/SystemImage/availlable.png" class="logo1" alt="" /> &nbsp;Availlable category</h4>
+            </div>
+            <div class="card-body text-center">
+
+                <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>
+                                    Item category
+                                </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            @{ 
+                            @foreach (var item in ViewBag.itemlist)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="/@item.ImageURL" alt="" class="rounded-circle" style="height:40px;width:40px;" />
+                                    </td>
+                                    <td>
+                                        @item.Category_name
+                                    </td>
+                                    <td>
+                                        <!--nadai kuona vile uliinitialise uko juu kwa controler ama..zii kwa view-->
+                                        <a asp-action="Delete" class="btn btn-primary btn-sm" asp-route-id="@item.IDT">Delete</a>          |
+                                         <a asp-action="Details" class="btn btn-primary btn-sm" asp-route-id="@item.IDT">Add item &nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                            }}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section scripts1{
+    <script type="text/javascript">
+
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
