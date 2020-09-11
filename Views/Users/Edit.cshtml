@@ -1,4 +1,4 @@
-﻿@model Lubes.Models.c_Users
+﻿@model Lubes.Models.Users
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,7 +7,7 @@
 
 <h1>Edit</h1>
 
-<h4>c_Users</h4>
+<h4>Users</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,16 +19,16 @@
                 <span asp-validation-for="Full_name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="strPhone" class="control-label"></label>
-                <input asp-for="strPhone" class="form-control" />
-                <span asp-validation-for="strPhone" class="text-danger"></span>
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="strPassword" class="control-label"></label>
-                <input asp-for="strPassword" class="form-control" />
-                <span asp-validation-for="strPassword" class="text-danger"></span>
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="strUserId" />
+            <input type="hidden" asp-for="National_id" />
             <div class="form-group">
                 <label asp-for="strRole" class="control-label"></label>
                 <input asp-for="strRole" class="form-control" />

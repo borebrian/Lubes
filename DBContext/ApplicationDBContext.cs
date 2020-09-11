@@ -27,7 +27,7 @@ namespace Lubes.DBContext
 
 
         public DbSet<Lubes.Models.Stock_summary> Stock_summary { get; set; }
-        public DbSet<Lubes.Models.c_Users> c_Users { get; set; }
+        public DbSet<Lubes.Models.Users> c_Users { get; set; }
         public DbSet<Lubes.Models.Roles> Roles { get; set; }
 
 

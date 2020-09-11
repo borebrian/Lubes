@@ -27,115 +27,135 @@ namespace Lubes.Controllers
         // GET: Add_item
         public IActionResult Index()
         {
+            var x = HttpContext.Session.GetString("Username");
 
-            return View();
+            if (x == null)
+            {
+                return Redirect("~/Administration/Log_in.cshtml");
+
+            }
+            else
+            {
+                return View();
+
+            }
 
         }
 
    
             public async Task<IActionResult> Reports([Optional] string date)
         {
+            var x = HttpContext.Session.GetString("Username");
 
-            string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
-            var add_item = await _context.Submited_stock.FirstOrDefaultAsync(m => m.DateTime == date);
-            if (add_item == null)
+            if (x == null)
             {
-            //ViewBag.d = currentDate;
-            List<Add_item> ListOfItems = _context.Add_item.ToList();
-            List<Item_category> categorys = _context.Items_category.ToList();
-            //List<JoinCategoryAndItem> joinList = new List<JoinCategoryAndItem>();
-            List<Stock_summary> joinList = new List<Stock_summary>();
-            List<Submited_stock> Submitted = _context.Submited_stock.ToList();
-                var results = (from pd in categorys
-                               join od in ListOfItems on pd.IDT equals od.Category_id
-                               join sd in Submitted on od.id equals sd.item_id
-                               where sd.DateTime == currentDate
-                               select new
-                               {
-                                   pd.Category_name,
-                                   od.Item_price,
-                                   pd.ImageURL,
-                                   od.Item_name,
-                                   od.Quantity,
-                                   od.id,
-                                   sd.Cash_made,
-                                   sd.item_sold,
-                                   sd.User_id,
-                               }).ToList();
-                foreach (var item in results)
-                {
-                    Stock_summary JoinObject = new Stock_summary();
-                    JoinObject.Category_name = item.Category_name;
-                    JoinObject.Item_price = item.Item_price;
-                    JoinObject.ImageURL = item.ImageURL;
-                    JoinObject.Quantity = item.Quantity;
-                    JoinObject.Item_name = item.Item_name;
-                    JoinObject.id = item.id;
-                    JoinObject.item_sold = item.item_sold;
-                    JoinObject.Cash_made = item.Cash_made;
-                    JoinObject.User_id = item.User_id;
-                    joinList.Add(JoinObject);
-                    var JoinListToViewbag = joinList.ToList();
-                    ViewBag.JoinList = JoinListToViewbag;
-                }
+                return Redirect("~/Home/Log_in");
+
             }
             else
             {
-                List<Add_item> ListOfItems = _context.Add_item.ToList();
-                List<Item_category> categorys = _context.Items_category.ToList();
-                //List<JoinCategoryAndItem> joinList = new List<JoinCategoryAndItem>();
-                List<Stock_summary> joinList = new List<Stock_summary>();
-                List<Submited_stock> Submitted = _context.Submited_stock.ToList();
 
-                var results = (from pd in categorys
-                               join od in ListOfItems on pd.IDT equals od.Category_id
-                               join sd in Submitted on od.id equals sd.item_id
-                               where sd.DateTime==currentDate
-                               select new
-                               {
-                                   pd.Category_name,
-                                   od.Item_price,
-                                   pd.ImageURL,
-                                   od.Item_name,
-                                   od.Quantity,
-                                   od.id,
-                                   sd.Cash_made,
-                                   sd.item_sold,
-                                   sd.User_id,
-
-                               }).ToList();
-
-                foreach (var item in results)
+                string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+                var add_item = await _context.Submited_stock.FirstOrDefaultAsync(m => m.DateTime == date);
+                if (add_item == null)
                 {
-                    Stock_summary JoinObject = new Stock_summary();
-                    JoinObject.Category_name = item.Category_name;
-                    JoinObject.Item_price = item.Item_price;
-                    JoinObject.ImageURL = item.ImageURL;
-                    JoinObject.Quantity = item.Quantity;
-                    JoinObject.Item_name = item.Item_name;
-                    JoinObject.id = item.id;
-                    JoinObject.item_sold = item.item_sold;
-                    JoinObject.Cash_made = item.Cash_made;
-                    JoinObject.User_id = item.User_id;
-                    joinList.Add(JoinObject);
-                    var JoinListToViewbag = joinList.ToList();
-                    ViewBag.JoinList1 = JoinListToViewbag;
-                    ViewBag.count = JoinListToViewbag.Count();
-                    ViewBag.currentDate = currentDate;
-                    var total1 = _context.Submited_stock.Where(t => t.DateTime == date).Sum(i => i.Cash_made);
+                    //ViewBag.d = currentDate;
+                    List<Add_item> ListOfItems = _context.Add_item.ToList();
+                    List<Item_category> categorys = _context.Items_category.ToList();
+                    //List<JoinCategoryAndItem> joinList = new List<JoinCategoryAndItem>();
+                    List<Stock_summary> joinList = new List<Stock_summary>();
+                    List<Submited_stock> Submitted = _context.Submited_stock.ToList();
+                    var results = (from pd in categorys
+                                   join od in ListOfItems on pd.IDT equals od.Category_id
+                                   join sd in Submitted on od.id equals sd.item_id
+                                   where sd.DateTime == currentDate
+                                   select new
+                                   {
+                                       pd.Category_name,
+                                       od.Item_price,
+                                       pd.ImageURL,
+                                       od.Item_name,
+                                       od.Quantity,
+                                       od.id,
+                                       sd.Cash_made,
+                                       sd.item_sold,
+                                       sd.User_id,
+                                   }).ToList();
+                    foreach (var item in results)
+                    {
+                        Stock_summary JoinObject = new Stock_summary();
+                        JoinObject.Category_name = item.Category_name;
+                        JoinObject.Item_price = item.Item_price;
+                        JoinObject.ImageURL = item.ImageURL;
+                        JoinObject.Quantity = item.Quantity;
+                        JoinObject.Item_name = item.Item_name;
+                        JoinObject.id = item.id;
+                        JoinObject.item_sold = item.item_sold;
+                        JoinObject.Cash_made = item.Cash_made;
+                        JoinObject.User_id = item.User_id;
+                        joinList.Add(JoinObject);
+                        var JoinListToViewbag = joinList.ToList();
+                        ViewBag.JoinList = JoinListToViewbag;
+                    }
+                }
+                else
+                {
+                    List<Add_item> ListOfItems = _context.Add_item.ToList();
+                    List<Item_category> categorys = _context.Items_category.ToList();
+                    //List<JoinCategoryAndItem> joinList = new List<JoinCategoryAndItem>();
+                    List<Stock_summary> joinList = new List<Stock_summary>();
+                    List<Submited_stock> Submitted = _context.Submited_stock.ToList();
 
-                    ViewBag.total1 = total1;
+                    var results = (from pd in categorys
+                                   join od in ListOfItems on pd.IDT equals od.Category_id
+                                   join sd in Submitted on od.id equals sd.item_id
+                                   where sd.DateTime == currentDate
+                                   select new
+                                   {
+                                       pd.Category_name,
+                                       od.Item_price,
+                                       pd.ImageURL,
+                                       od.Item_name,
+                                       od.Quantity,
+                                       od.id,
+                                       sd.Cash_made,
+                                       sd.item_sold,
+                                       sd.User_id,
+
+                                   }).ToList();
+
+                    foreach (var item in results)
+                    {
+                        Stock_summary JoinObject = new Stock_summary();
+                        JoinObject.Category_name = item.Category_name;
+                        JoinObject.Item_price = item.Item_price;
+                        JoinObject.ImageURL = item.ImageURL;
+                        JoinObject.Quantity = item.Quantity;
+                        JoinObject.Item_name = item.Item_name;
+                        JoinObject.id = item.id;
+                        JoinObject.item_sold = item.item_sold;
+                        JoinObject.Cash_made = item.Cash_made;
+                        JoinObject.User_id = item.User_id;
+                        joinList.Add(JoinObject);
+                        var JoinListToViewbag = joinList.ToList();
+                        ViewBag.JoinList1 = JoinListToViewbag;
+                        ViewBag.count = JoinListToViewbag.Count();
+                        ViewBag.currentDate = currentDate;
+                        var total1 = _context.Submited_stock.Where(t => t.DateTime == date).Sum(i => i.Cash_made);
+
+                        ViewBag.total1 = total1;
+
+
+                    }
+
 
 
                 }
+                var total = _context.Submited_stock.Where(t => t.DateTime == currentDate).Sum(i => i.Cash_made);
+                ViewBag.CashTotals = total;
 
-
-
+                return View();
             }
-            var total = _context.Submited_stock.Where(t => t.DateTime == currentDate).Sum(i => i.Cash_made);
-            ViewBag.CashTotals = total;
-
-            return View();
         }
 
        
@@ -200,87 +220,115 @@ namespace Lubes.Controllers
         }
         public IActionResult SubmitStock()
         {
-            bindSubmitItems();
-            ViewBag.AllowPopup = "2";
+            var x = HttpContext.Session.GetString("Username");
 
-            return View();
+            if (x == null)
+            {
+                return Redirect("~/Home/Log_in");
 
+            }
+            else
+            {
+                bindSubmitItems();
+                ViewBag.AllowPopup = "2";
+
+                return View();
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SubmitStock(int id, int Quantity, [Optional] string newItem)
         {
+            var x = HttpContext.Session.GetString("Username");
 
-            var query = _context.Add_item.Where(x => x.id == id).Single();
-            ViewBag.InitialQuantity = query.Quantity;
-            ViewBag.CurrentQuantity = Quantity;
-            float price = query.Item_price;
-            int sold = int.Parse(query.Quantity.ToString()) - Quantity;
-            float cashMade = price * sold;
-            ViewBag.ChashMade = cashMade;
-            ViewBag.price = price;
-            ViewBag.Item_name = query.Item_name;
+            if (x == null)
+            {
+                return Redirect("~/Home/Log_in");
 
-            ViewBag.sold = sold;
-            ViewBag.id = id;
-            ViewBag.EnteredQuantity = Quantity;
+            }
+            else
+            {
+                var query = _context.Add_item.Where(x => x.id == id).Single();
+                ViewBag.InitialQuantity = query.Quantity;
+                ViewBag.CurrentQuantity = Quantity;
+                float price = query.Item_price;
+                int sold = int.Parse(query.Quantity.ToString()) - Quantity;
+                float cashMade = price * sold;
+                ViewBag.ChashMade = cashMade;
+                ViewBag.price = price;
+                ViewBag.Item_name = query.Item_name;
 
-            ViewBag.AllowPopup = "1";
-            bindSubmitItems();
-            return View();
+                ViewBag.sold = sold;
+                ViewBag.id = id;
+                ViewBag.EnteredQuantity = Quantity;
+
+                ViewBag.AllowPopup = "1";
+                bindSubmitItems();
+                return View();
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitStockPost(int id, int Quantity, [Optional] string newItem)
         {
-            int closing_stock = Quantity;
-            //var combineList = _context.Add_item.Where(x => x.id == id);
-            var allFields = await _context.Add_item.FindAsync(id);
-            int database_stock = allFields.Quantity;
-            int itemSold = database_stock - closing_stock;
-            int newQuantity = Quantity;
+            var x = HttpContext.Session.GetString("Username");
 
-            if(itemSold<0){
-                TempData["StockUpdateStatus1"] = "Submitted closing  stock value for " + allFields.Item_name + " is incorrect.";
+            if (x == null)
+            {
+                return Redirect("~/Home/Log_in");
+
             }
             else
             {
-                AddSession(itemSold.ToString(), itemSold.ToString());
-                var query = _context.Add_item.Where(x => x.id == id).Single();
-                //LETS UPDATE VALUES IN DATABASE
-                query.Quantity = newQuantity;
-                query.DateTime = DateTime.Now.ToString("yyyy-MM-dd");
-                _context.Update(query);
-                await _context.SaveChangesAsync();
+                int closing_stock = Quantity;
+                //var combineList = _context.Add_item.Where(x => x.id == id);
+                var allFields = await _context.Add_item.FindAsync(id);
+                int database_stock = allFields.Quantity;
+                int itemSold = database_stock - closing_stock;
+                int newQuantity = Quantity;
 
-
-                //LETS CALCULATE CASH MADE
-
-                float price = query.Item_price;
-                float cashMade = price * itemSold;
-                Guid g = Guid.NewGuid();
-                //LETS ADD SUBMITTED STOCK TO THEIR RESPECTIVE TABLES
-                var submitted = new Submited_stock()
+                if (itemSold < 0)
                 {
-                    item_id = id,
-                    DateTime = DateTime.Now.ToString("yyyy-MM-dd"),
-                    item_sold = itemSold,
-                    Cash_made = cashMade,
-                    User_id = g.ToString()
+                    TempData["StockUpdateStatus1"] = "Submitted closing  stock value for " + allFields.Item_name + " is incorrect.";
+                }
+                else
+                {
+                    AddSession(itemSold.ToString(), itemSold.ToString());
+                    var query = _context.Add_item.Where(x => x.id == id).Single();
+                    //LETS UPDATE VALUES IN DATABASE
+                    query.Quantity = newQuantity;
+                    query.DateTime = DateTime.Now.ToString("yyyy-MM-dd");
+                    _context.Update(query);
+                    await _context.SaveChangesAsync();
 
-                };
-                _context.Add(submitted);
-                _context.SaveChanges();
-                TempData["StockUpdateStatus"] = query.Item_name + " has been submitted successfully! \n Initial stock: " + database_stock + "\n Item sold: " + itemSold + "\n New stock: " + Quantity;
-                bindSubmitItems();
 
+                    //LETS CALCULATE CASH MADE
+
+                    float price = query.Item_price;
+                    float cashMade = price * itemSold;
+                    Guid g = Guid.NewGuid();
+                    //LETS ADD SUBMITTED STOCK TO THEIR RESPECTIVE TABLES
+                    var submitted = new Submited_stock()
+                    {
+                        item_id = id,
+                        DateTime = DateTime.Now.ToString("yyyy-MM-dd"),
+                        item_sold = itemSold,
+                        Cash_made = cashMade,
+                        User_id = g.ToString()
+
+                    };
+                    _context.Add(submitted);
+                    _context.SaveChanges();
+                    TempData["StockUpdateStatus"] = query.Item_name + " has been submitted successfully! \n Initial stock: " + database_stock + "\n Item sold: " + itemSold + "\n New stock: " + Quantity;
+                    bindSubmitItems();
+
+                }
+
+
+                return RedirectToAction(nameof(SubmitStock));
             }
-
-
-            return RedirectToAction(nameof(SubmitStock));
-
         }
         public void AddSession(string SessionName, string SessionData)
         {
@@ -289,104 +337,137 @@ namespace Lubes.Controllers
         // GET: Add_item/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var x = HttpContext.Session.GetString("Username");
 
-            var add_item = await _context.Add_item
-                .FirstOrDefaultAsync(m => m.Category_id.ToString() == id);
-            if (add_item == null)
+            if (x == null)
             {
-                return NotFound();
-            }
+                return Redirect("~/Home/Log_in");
 
-            return View(add_item);
+            }
+            else
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var add_item = await _context.Add_item
+                    .FirstOrDefaultAsync(m => m.Category_id.ToString() == id);
+                if (add_item == null)
+                {
+                    return NotFound();
+                }
+
+                return View(add_item);
+            }
         }
 
         // GET: Add_item/Create
         public void BindCategoryName()
         {
-            //string selectedValue = cateGory.Category_name;
-            List<Item_category> CategoryList = new List<Models.Item_category>();
-            CategoryList = (from items in _context.Items_category select items).ToList();
-            //idList.Insert(0, new Rental_Owners { National_id=0,Full_names})
-            CategoryList.Insert(0, new Item_category { IDT = 0, Category_name = "--Select Category--" });
-            ViewBag.categoryList = CategoryList;
+            var x = HttpContext.Session.GetString("Username");
+
+            if (x == null)
+            {
+               Redirect("~/Home/Log_in");
+
+            }
+            else
+            {
+                //string selectedValue = cateGory.Category_name;
+                List<Item_category> CategoryList = new List<Models.Item_category>();
+                CategoryList = (from items in _context.Items_category select items).ToList();
+                //idList.Insert(0, new Rental_Owners { National_id=0,Full_names})
+                CategoryList.Insert(0, new Item_category { IDT = 0, Category_name = "--Select Category--" });
+                ViewBag.categoryList = CategoryList;
+            }
         }
         public IActionResult Create(Item_category cateGory, [Optional] string Value)
         {
-
-            var combineList = _context.Add_item.ToList();
-            ViewBag.itemlist = combineList;
-            List<Add_item> ListOfItems = _context.Add_item.ToList();
-            List<Item_category> categorys = _context.Items_category.ToList();
-            List<JoinCategoryAndItem> joinList = new List<JoinCategoryAndItem>();
-
-            var results = (from pd in categorys
-                           join od in ListOfItems on pd.IDT equals od.Category_id
-                           select new
-                           {
-                               pd.Category_name,
-                               od.Item_price,
-                               pd.ImageURL,
-                               od.Item_name,
-                               od.Quantity,
-                               od.id,
-
-                           }).ToList();
-
-            foreach (var item in results)
+            if (HttpContext.Session.GetString("Roles") == "1" || HttpContext.Session.GetString("Roles") == "3")
             {
-                JoinCategoryAndItem JoinObject = new JoinCategoryAndItem();
-                JoinObject.Category_name = item.Category_name;
-                JoinObject.Item_price = item.Item_price;
-                JoinObject.ImageURL = item.ImageURL;
-                JoinObject.Quantity = item.Quantity;
-                JoinObject.Item_name = item.Item_name;
-                JoinObject.id = item.id;
-                joinList.Add(JoinObject);
+
+                 var combineList = _context.Add_item.ToList();
+                    ViewBag.itemlist = combineList;
+                    List<Add_item> ListOfItems = _context.Add_item.ToList();
+                    List<Item_category> categorys = _context.Items_category.ToList();
+                    List<JoinCategoryAndItem> joinList = new List<JoinCategoryAndItem>();
+
+                    var results = (from pd in categorys
+                                   join od in ListOfItems on pd.IDT equals od.Category_id
+                                   select new
+                                   {
+                                       pd.Category_name,
+                                       od.Item_price,
+                                       pd.ImageURL,
+                                       od.Item_name,
+                                       od.Quantity,
+                                       od.id,
+
+                                   }).ToList();
+
+                    foreach (var item in results)
+                    {
+                        JoinCategoryAndItem JoinObject = new JoinCategoryAndItem();
+                        JoinObject.Category_name = item.Category_name;
+                        JoinObject.Item_price = item.Item_price;
+                        JoinObject.ImageURL = item.ImageURL;
+                        JoinObject.Quantity = item.Quantity;
+                        JoinObject.Item_name = item.Item_name;
+                        JoinObject.id = item.id;
+                        joinList.Add(JoinObject);
 
 
-                var JoinListToViewbag = joinList.ToList();
-                ViewData["SearchStatus"] = search;
-                if (Value == null)
-                {
-                    ViewBag.JoinList = JoinListToViewbag;
+                        var JoinListToViewbag = joinList.ToList();
+                        ViewData["SearchStatus"] = search;
+                        if (Value == null)
+                        {
+                            ViewBag.JoinList = JoinListToViewbag;
+
+                        }
+
+                        else
+                        {
+
+                            //LETS COUNT THE RESULTS
+                            int counts = joinLists(Value).Count();
+                            if (counts > 0)
+                            {
+                                ViewBag.JoinList = joinLists(Value);
+                                ViewBag.ItemsCount = counts;
+                                ViewBag.SearchValue = Value;
+
+                            }
+                            else
+                            {
+                                ViewBag.JoinList = null;
+                                ViewBag.ItemsCount = 0;
+                                ViewBag.SearchValue = Value;
+
+                            
+
+                        }
+                    }
+
+
+
+
+
+
+                    BindCategoryName();
 
                 }
+                return View();
 
-                else
-                {
-
-                    //LETS COUNT THE RESULTS
-                    int counts = joinLists(Value).Count();
-                    if (counts > 0)
-                    {
-                        ViewBag.JoinList = joinLists(Value);
-                        ViewBag.ItemsCount = counts;
-                        ViewBag.SearchValue = Value;
-
-                    }
-                    else
-                    {
-                        ViewBag.JoinList = null;
-                        ViewBag.ItemsCount = 0;
-                        ViewBag.SearchValue = Value;
-
-                    }
-
-                }
             }
+            else
+            {
+                TempData["warn"] = "You dont have previlleges to access this link!";
+                return Redirect("~/Administration/Dashboard");
+               
 
-
-
-
-
-
-            BindCategoryName();
-
-            return View();
+            }
+           
         }
 
 
@@ -398,61 +479,71 @@ namespace Lubes.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Category_id,Item_name,Item_price,Quantity,DateTime")] Add_item add_item)
         {
-            if (ModelState.IsValid)
+            var x = HttpContext.Session.GetString("Username");
+
+            if (x == null)
             {
-                _context.Add(add_item);
-                await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
+                return Redirect("~/Home/Log_in");
+
             }
-            //var combineList = _context.Add_item.Include("category").ToList();
-            //ViewBag.itemlist = combineList;
-
-
-
-
-            List<Add_item> ListOfItems = _context.Add_item.ToList();
-            List<Item_category> categorys = _context.Items_category.ToList();
-            List<JoinCategoryAndItem> joinList = new List<JoinCategoryAndItem>();
-
-            var results = (from pd in categorys
-                           join od in ListOfItems on pd.IDT equals od.Category_id
-                           select new
-                           {
-                               pd.Category_name,
-                               od.Item_price,
-                               pd.ImageURL,
-                               od.Item_name,
-                               od.Quantity,
-                               od.id,
-
-                           }).ToList();
-
-            foreach (var item in results)
+            else
             {
-                JoinCategoryAndItem JoinObject = new JoinCategoryAndItem();
-                JoinObject.Category_name = item.Category_name;
-                JoinObject.Item_price = item.Item_price;
-                JoinObject.ImageURL = item.ImageURL;
-                JoinObject.Quantity = item.Quantity;
-                JoinObject.Item_name = item.Item_name;
-                JoinObject.id = item.id;
-                joinList.Add(JoinObject);
+                if (ModelState.IsValid)
+                {
+                    _context.Add(add_item);
+                    await _context.SaveChangesAsync();
+                    //return RedirectToAction(nameof(Index));
+                }
+                //var combineList = _context.Add_item.Include("category").ToList();
+                //ViewBag.itemlist = combineList;
 
-                var JoinListToViewbag = joinList.ToList();
 
-                ViewBag.JoinList = JoinListToViewbag;
+
+
+                List<Add_item> ListOfItems = _context.Add_item.ToList();
+                List<Item_category> categorys = _context.Items_category.ToList();
+                List<JoinCategoryAndItem> joinList = new List<JoinCategoryAndItem>();
+
+                var results = (from pd in categorys
+                               join od in ListOfItems on pd.IDT equals od.Category_id
+                               select new
+                               {
+                                   pd.Category_name,
+                                   od.Item_price,
+                                   pd.ImageURL,
+                                   od.Item_name,
+                                   od.Quantity,
+                                   od.id,
+
+                               }).ToList();
+
+                foreach (var item in results)
+                {
+                    JoinCategoryAndItem JoinObject = new JoinCategoryAndItem();
+                    JoinObject.Category_name = item.Category_name;
+                    JoinObject.Item_price = item.Item_price;
+                    JoinObject.ImageURL = item.ImageURL;
+                    JoinObject.Quantity = item.Quantity;
+                    JoinObject.Item_name = item.Item_name;
+                    JoinObject.id = item.id;
+                    joinList.Add(JoinObject);
+
+                    var JoinListToViewbag = joinList.ToList();
+
+                    ViewBag.JoinList = JoinListToViewbag;
+                }
+
+
+
+
+
+
+
+
+                BindCategoryName();
+
+                return View();
             }
-
-
-
-
-
-
-
-
-            BindCategoryName();
-
-            return View();
         }
         public List<JoinCategoryAndItem> joinLists(string Value)
         {

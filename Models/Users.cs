@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Lubes.Models
 {
-    public class c_Users
+    public class Users
     {
        
         
@@ -26,12 +26,12 @@ namespace Lubes.Models
 
         [DataType(DataType.PhoneNumber)]
 
-        public string strPhone { get; set; }
+        public string Phone { get; set; }
         [Required]
         [Display(Name = "Password", Prompt = "Password")]
 
         [DataType(DataType.Password)]
-        public string strPassword { get; set; }
+        public string Password { get; set; }
         [Key]
 
         [Required]
@@ -39,14 +39,14 @@ namespace Lubes.Models
         
         [Display(Name = "National id", Prompt = "Natianal id")]
 
-        public string strUserId { get; set; }
+        public int National_id { get; set; }
 
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Display(Name = "Select role", Prompt = "")]
 
         
-        public string strRole { get; set; }
+        public int strRole { get; set; }
 
    
     }

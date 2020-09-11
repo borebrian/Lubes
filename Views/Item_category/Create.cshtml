@@ -8,16 +8,16 @@
 
 <div class="card card-1">
     <div class="card-body">
-        <h4><img src="/SystemImage/addcategory.png" class="logo1" alt="" /> &nbsp;Add new item category</h4>
+        <h4><img src="/SystemImage/addcategory.png"  class="iconMideum" alt="" /> &nbsp;Add new item category</h4>
     </div>
 </div>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <div class="card card-1">
-            <div class="card-header text-left" style="        background-color: #1ABC9C;
+            <div class="card-header text-left" style="        background-color: #68213A;
         color: white">
-                <img src="/SystemImage/logo.png" alt="" class="rounded-circle" style="height:50px;width:50px;border:2px white solid" /> &nbsp; Add new category
+                <img src="/SystemImage/add_category.png" asp-append-version="true" alt=""  style="height:40px;width:40px;" /> &nbsp; Add new category
             </div>
             <div class="card-body">
                 <form asp-action="Create" enctype="multipart/form-data">
@@ -56,11 +56,11 @@
                 <table class="table">
                         <thead>
                             <tr>
-                                <th>Image</th>
-                                <th>
+                                <th style="border-top:none">Image</th>
+                                <th style="border-top:none">
                                     Item category
-                                </th>
-                                <th>Actions</th>
+                                </th >
+                                <th style="border-top:none">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,16 +69,16 @@
                             @foreach (var item in ViewBag.itemlist)
                             {
                                 <tr>
-                                    <td>
+                                    <td style="border-top:none">
                                         <img src="/@item.ImageURL" alt="" class="rounded-circle" style="height:40px;width:40px;" />
                                     </td>
-                                    <td>
+                                    <td style="border-top:none">
                                         @item.Category_name
                                     </td>
-                                    <td>
+                                    <td style="border-top:none">
                                         <!--nadai kuona vile uliinitialise uko juu kwa controler ama..zii kwa view-->
-                                        <a asp-action="Delete" class="btn btn-primary btn-sm" asp-route-id="@item.IDT">Delete</a>          |
-                                         <a asp-action="Details" class="btn btn-primary btn-sm" asp-route-id="@item.IDT">Add item &nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                        <a asp-action="Delete" class="btn btn-primary btn-sm" asp-route-id="@item.IDT"><i class="fa fa-trash-o" aria-hidden="true"></i></a>          |
+                                         <a asp-action="Create" asp-controller="Add_item"  class="btn btn-primary btn-sm" a> &nbsp;<i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                                     </td>
                                 </tr>
                             }}
@@ -91,8 +91,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    
 @section scripts1{
     <script type="text/javascript">
 

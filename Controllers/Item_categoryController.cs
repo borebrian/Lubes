@@ -11,6 +11,7 @@ using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using Lubes.Models;
 using Lubes.DBContext;
+using Microsoft.AspNetCore.Http;
 
 namespace Lubes.Controllers
 {
@@ -29,7 +30,17 @@ namespace Lubes.Controllers
     
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Items_category.ToListAsync());
+            var x = HttpContext.Session.GetString("Username");
+
+            if (x == null)
+            {
+                return Redirect("~/Home/Log_in");
+
+            }
+            else
+            {
+                return View(await _context.Items_category.ToListAsync());
+            }
         }
 
        
@@ -37,28 +48,48 @@ namespace Lubes.Controllers
         // GET: Item_category/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var x = HttpContext.Session.GetString("Username");
 
-            var item_category = await _context.Items_category
-                .FirstOrDefaultAsync(m => m.IDT == id);
-            if (item_category == null)
+            if (x == null)
             {
-                return NotFound();
-            }
+                return Redirect("~/Home/Log_in");
 
-            return View(item_category);
+            }
+            else
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var item_category = await _context.Items_category
+                    .FirstOrDefaultAsync(m => m.IDT == id);
+                if (item_category == null)
+                {
+                    return NotFound();
+                }
+
+                return View(item_category);
+            }
         }
         //acha nkuekee ya kulog uot...so kwanza tunadisplayub user ...but unaezaweka invisible..
         // GET: Item_category/Create
         //[Authorize]
         public IActionResult Create()
         {
-            List<Item_category> itemlist = _context.Items_category.ToList();
-            ViewBag.itemlist = itemlist;
-            return View();
+            var x = HttpContext.Session.GetString("Username");
+
+            if (x == null)
+            {
+                return Redirect("~/Home/Log_in");
+
+            }
+            else
+            {
+                List<Item_category> itemlist = _context.Items_category.ToList();
+                ViewBag.itemlist = itemlist;
+                return View();
+            }
         }
         //run
         // POST: Item_category/Create
@@ -69,36 +100,45 @@ namespace Lubes.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( Item_category model)
         {
-            string fileName = System.IO.Path.GetFileName(model.Category_image.FileName);
+            var x = HttpContext.Session.GetString("Username");
+
+            if (x == null)
+            {
+                return Redirect("~/Home/Log_in");
+
+            }
+            else
+            {
+                string fileName = System.IO.Path.GetFileName(model.Category_image.FileName);
             string filePath = "/Images/" + fileName;
 
-            if (ModelState.IsValid)
-            {
-                if (model.Category_image !=null)
+                if (ModelState.IsValid)
                 {
-                    string folder = "images/"+Guid.NewGuid().ToString() + model.Category_image.FileName;
-                    folder += Guid.NewGuid().ToString() + model.Category_image.FileName;
-                    string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
-                    await model.Category_image.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
-
-                    //model.SaveAs(Server.MapPath(filePath));
-
-                    //var filename = Path.GetFileName(file.FileName);
-                    //var path = Path.Combine(Server.MapPath("~/Uploads/Photo/"), filename);
-                    //file.SaveAs(path);
-                    //tyre.Url = filename;
-
-
-                    Item_category itemC = new Item_category
+                    if (model.Category_image != null)
                     {
-                        Category_name = model.Category_name,
-                        ImageURL = folder,
-                     
-                    };
-                    _context.Add(itemC);
-                    await _context.SaveChangesAsync();
-                }
+                        string folder = "images/" + Guid.NewGuid().ToString() + model.Category_image.FileName;
+                        folder += Guid.NewGuid().ToString() + model.Category_image.FileName;
+                        string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
+                        await model.Category_image.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
 
+                        //model.SaveAs(Server.MapPath(filePath));
+
+                        //var filename = Path.GetFileName(file.FileName);
+                        //var path = Path.Combine(Server.MapPath("~/Uploads/Photo/"), filename);
+                        //file.SaveAs(path);
+                        //tyre.Url = filename;
+
+
+                        Item_category itemC = new Item_category
+                        {
+                            Category_name = model.Category_name,
+                            ImageURL = folder,
+
+                        };
+                        _context.Add(itemC);
+                        await _context.SaveChangesAsync();
+                    }
+                }
                
             }
 
@@ -115,17 +155,27 @@ namespace Lubes.Controllers
         // GET: Item_category/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var x = HttpContext.Session.GetString("Username");
 
-            var item_category = await _context.Items_category.FindAsync(id);
-            if (item_category == null)
+            if (x == null)
             {
-                return NotFound();
+                return Redirect("~/Home/Log_in");
+
             }
-            return View(item_category);
+            else
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var item_category = await _context.Items_category.FindAsync(id);
+                if (item_category == null)
+                {
+                    return NotFound();
+                }
+                return View(item_category);
+            }
         }
 
         // POST: Item_category/Edit/5
@@ -135,50 +185,70 @@ namespace Lubes.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Category_title")] Item_category item_category)
         {
-            if (id != item_category.IDT)
-            {
-                return NotFound();
-            }
+            var x = HttpContext.Session.GetString("Username");
 
-            if (ModelState.IsValid)
+            if (x == null)
             {
-                try
-                {
-                    _context.Update(item_category);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!Item_categoryExists(item_category.IDT))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return Redirect("~/Home/Log_in");
+
             }
-            return View(item_category);
+            else
+            {
+                if (id != item_category.IDT)
+                {
+                    return NotFound();
+                }
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Update(item_category);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!Item_categoryExists(item_category.IDT))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(item_category);
+            }
         }
 
         // GET: Item_category/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var x = HttpContext.Session.GetString("Username");
 
-            var item_category = await _context.Items_category
-                .FirstOrDefaultAsync(m => m.IDT == id);
-            if (item_category == null)
+            if (x == null)
             {
-                return NotFound();
-            }
+                return Redirect("~/Home/Log_in");
 
-            return View(item_category);
+            }
+            else
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var item_category = await _context.Items_category
+                    .FirstOrDefaultAsync(m => m.IDT == id);
+                if (item_category == null)
+                {
+                    return NotFound();
+                }
+
+                return View(item_category);
+            }
         }
 
         // POST: Item_category/Delete/5

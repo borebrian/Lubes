@@ -34,7 +34,7 @@ namespace Lubes.Models
 
 
         [Required]
-        //[DataType(DataType.Date)]
+        [DataType(DataType.Date)]
         public string DateTime { get; set; }
 
        

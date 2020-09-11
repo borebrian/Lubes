@@ -1,11 +1,10 @@
 ﻿{
   "iisSettings": {
     "windowsAuthentication": false,
-    "launchBrowser": true,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://fuelaholdings-002-site21.itempurl.com/",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:52856",
+      "sslPort": 44312
     }
   },
   "profiles": {

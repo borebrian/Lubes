@@ -1,4 +1,20 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿
+    $(document).ready(function () {
+        //displayname.value = item_name;
+        //displayquantity.innerHTML = inputValue;
 
-// Write your JavaScript code.
+        //document.getElementById("displayname").innerHTML = a;
+        //document.getElementById("displayquantity").innerHTML = document.getElementById("item_name1").value;
+        var data = "@ViewBag.AllowPopup";
+
+        if (data == "1") {
+
+        $('#myModal').modal('show')
+
+    }
+        else {
+
+    }
+
+
+    });

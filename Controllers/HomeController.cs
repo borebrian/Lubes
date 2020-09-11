@@ -18,65 +18,51 @@ namespace Lubes.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDBContext _context;
-      
+   
+
         public HomeController(ApplicationDBContext context)
         {
             _context = context;
           
         }
-        private readonly ILogger<HomeController> _logger;
-
-       
-
-        //public IActionResult LoginUser(c_Users user)
-        //{
-           
-            
-        //    if (user.strUserId == null || user.strPassword == null)
-        //    {
-              
-        //        TempData["Error"] = "Username or password required!";
-        //        return Redirect("~/Home/Log_in");
-        //    }
-        //    var Username = user.strUserId;
-
-        //    TokenProvider TokenProvider = new TokenProvider(_context);
-
-        //    var userToken = TokenProvider.LoginUser(user.strUserId.ToString(), user.strPassword);
-        //    if (userToken == null)
-        //    {
-
-          
-        //        TempData["Error"] = "Incorrect username or passsword!";
-        //        return Redirect("~/Home/Log_in");
-
-
-        //    }
-
-        //    HttpContext.Session.SetString("JWToken", userToken);
-        //    HttpContext.Session.SetString("User", Username.ToString());
-        //    return Redirect("~/Administration/Dashboard");
-
-        //}
+     
         public IActionResult Logoff()
         {
             HttpContext.Session.Clear();
             return Redirect("~/Home/Index");
 
         }
-        public IActionResult Log_in([Optional] string
-            err)
+        public IActionResult Log_in()
 
         {
-            //var checkIfExist = _context.c_Users.ToList();
-            //int countR = checkIfExist.Count();
-            //if (countR ==0)
-            //{
-            //    Redirect("~/c_Users/Create");
-            //}
-            //@ViewBag.warning = err;
+            HttpContext.Session.Clear();
 
             return View();
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Log_in(Users users) { 
+            var result = _context.c_Users.Where(i => i.National_id == users.National_id && i.Password == users.Password).FirstOrDefault();
+
+
+            if (result != null)
+            {
+                HttpContext.Session.SetString("Roles", result.strRole.ToString());
+                HttpContext.Session.SetString("Username", result.Full_name);
+              return  Redirect("~/Administration/Dashboard");
+
+            }
+            else
+            {
+                ViewBag.Error = "Invalid log in credentials";
+                //        return Redirect("~/Home/Log_in");
+
+                return View();
+
+            }
+
+
         }
 
         public IActionResult Privacy()

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Lubes.Models.c_Users>
+﻿@model IEnumerable<Lubes.Models.Users>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,10 +17,10 @@
                 @Html.DisplayNameFor(model => model.Full_name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.strPhone)
+                @Html.DisplayNameFor(model => model.Phone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.strPassword)
+                @Html.DisplayNameFor(model => model.Password)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.strRole)
@@ -35,18 +35,18 @@
                 @Html.DisplayFor(modelItem => item.Full_name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.strPhone)
+                @Html.DisplayFor(modelItem => item.Phone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.strPassword)
+                @Html.DisplayFor(modelItem => item.Password)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.strRole)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.strUserId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.strUserId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.strUserId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.National_id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.National_id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.National_id">Delete</a>
             </td>
         </tr>
 }

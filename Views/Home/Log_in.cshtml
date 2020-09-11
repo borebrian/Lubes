@@ -1,56 +1,64 @@
-﻿@model Lubes.Models.c_Users
+﻿@model Lubes.Models.Users
 @{
     ViewData["Title"] = "Home Page";
 }
 <div style="margin-top:20px;margin-bottom:20px;">
-  
-        <div id="layoutAuthentication">
-            <div id="layoutAuthentication_content">
-                <main>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-5">
-                                @using (Html.BeginForm("LoginUser", "Home", FormMethod.Post, new { role = "form" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                        <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
-                                        <div class="card-body">
-                                            <form class="text-center">
-                                                <div class="form-group">
 
-                                                    <label asp-for="strUserId" class="control-label"></label>
-                                                    @Html.TextBoxFor(m => m.strUserId, new { @class = "form-control py-4", @placeholder = "Email" })
-                                                    <span asp-validation-for="strUserId" class="text-danger"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label asp-for="strPassword" class="control-label"></label>
-                                                    @Html.PasswordFor(m => m.strPassword, new { @class = "form-control py-4", @placeholder = "Password" })
-                                                    <span asp-validation-for="strPassword" class="text-danger"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    
-                                                </div>
-                                                <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                    
-                                                    <button type="submit" class="btn btn-primary" href="index.html">Login</button>
-                                                </div>
-                                            </form>
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5">
+                            @*@using (Html.BeginForm("LoginUser", "Home", FormMethod.Post, new { role = "form" }))
+                                {*@
+                            @Html.AntiForgeryToken()
+                            <div class="card customeShaddow " style="        background-color: #68213A;
+        font-weight: 900;
+        border-radius: 20px;
+">
+                                <div class="card-header " style="        background-color: #68213A;
+        font-weight: 900;
+        border-radius: 20px;
+">
+                                    <h3 class="text-left text-light  my-4">
+                                        <img src="/SystemImage/logolubee.png" style="width:80px;width:80px;font-family:best" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login
+                                    </h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    <form asp-action="Log_in">
+                                        <div class="form-group text-light text-left">
+
+                                            <label asp-for="National_id" class="control-label"></label>
+                                            <input placeholder="National id" required tabindex=17 asp-for="National_id" class="form-control">
+                                            <span asp-validation-for="National_id" class="text-danger"></span>
                                         </div>
-                                        <div class="card-footer text-center">
-                                            <div class="small">  <label class="text-danger">@TempData["Error"]</label></div>
+                                        <div class="form-group text-light text-left">
+                                            <label asp-for="Password" class="control-label"></label>
+                                            <input asp-for="Password" placeholder="Password" type="password" required tabindex=17 class="form-control">
+                                            <span asp-validation-for="Password" class="text-danger"></span>
                                         </div>
-                                    </div>
-                                }
+
+                                        <div class="form-group ">
+
+                                            <button type="submit" class="btn btn-light text-center" href="index.html">Login</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="small">  <label class="text-danger">@ViewBag.Error</label></div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
-                </main>
-            </div>
-           
+                </div>
+            </main>
         </div>
-       
- 
+
+    </div>
+
+
 
 
 </div>
